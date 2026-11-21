@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusPilot — Student OS</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand"><span class="brand-mark">C</span><div><b>CampusPilot</b><small>STUDENT OS</small></div></div>
+  <div class="side-label">WORKSPACE</div>
+  <button class="nav active" data-view="dashboard">▦ <span>Overview</span></button>
+  <button class="nav" data-view="tasks">☑ <span>My Tasks</span><i id="taskCount">0</i></button>
+  <button class="nav" data-view="events">◷ <span>Campus Events</span></button>
+  <button class="nav" data-view="study">◉ <span>Study Tracker</span></button>
+  <button class="nav" data-view="career">✦ <span>Career Hub</span></button>
+  <div class="sidebar-bottom"><div class="avatar">S</div><div><b>Student Workspace</b><small>Personal dashboard</small></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><span class="eyebrow">YOUR UNIVERSITY, ORGANIZED</span><h1 id="pageTitle">Good afternoon 👋</h1><p id="pageSubtitle">A clearer view of everything happening in your student life.</p></div><div class="top-actions"><span class="date-pill" id="todayDate"></span><button class="primary" id="quickAdd">＋ Add task</button></div></header>
+<section id="dashboard" class="view">
+  <div class="welcome"><div><span class="eyebrow light">YOUR DAILY COMMAND CENTER</span><h2>Make today count.</h2><p>Plan smarter, stay consistent, and keep moving forward.</p></div><div class="welcome-art">✦</div></div>
+  <div class="stats">
+    <article class="stat"><span>OPEN TASKS</span><strong id="openStat">0</strong><small>Things still on your list</small></article>
+    <article class="stat"><span>COMPLETED</span><strong id="doneStat">0</strong><small>Tasks you've finished</small></article>
+    <article class="stat"><span>UPCOMING EVENTS</span><strong id="eventStat">0</strong><small>Campus activities planned</small></article>
+    <article class="stat"><span>STUDY HOURS</span><strong id="hoursStat">0h</strong><small>Total tracked this week</small></article>
+  </div>
+  <div class="columns"><div class="panel"><div class="panel-head"><div><h3>Priority tasks</h3><p>What needs your attention</p></div><button class="text-btn" data-go="tasks">View all →</button></div><div id="dashboardTasks" class="task-list"></div></div>
+  <div class="panel"><div class="panel-head"><div><h3>Upcoming on campus</h3><p>Stay connected beyond class</p></div><button class="text-btn" data-go="events">View all →</button></div><div id="dashboardEvents" class="event-list"></div></div></div>
+  <div class="panel progress-panel"><div class="panel-head"><div><h3>Weekly momentum</h3><p>Your task completion progress</p></div><strong id="progressLabel">0%</strong></div><div class="progress-track"><div id="progressBar"></div></div><small id="progressHint">Complete a task to start building momentum.</small></div>
+</section>
+<section id="tasks" class="view hidden"><div class="section-head"><div><h2>My Tasks</h2><p>Assignments, exams, personal goals — all in one place.</p></div><button class="primary" id="addTask">＋ New task</button></div><div class="filters"><button class="filter active" data-filter="All">All</button><button class="filter" data-filter="Open">Open</button><button class="filter" data-filter="Completed">Completed</button></div><div class="panel"><div id="allTasks" class="task-list"></div></div></section>
+<section id="events" class="view hidden"><div class="section-head"><div><h2>Campus Events</h2><p>Keep track of workshops, club activities and competitions.</p></div><button class="primary" id="addEvent">＋ Add event</button></div><div id="allEvents" class="event-grid"></div></section>
+<section id="study" class="view hidden"><div class="section-head"><div><h2>Study Tracker</h2><p>Build consistency through small, measurable study sessions.</p></div></div><div class="study-layout"><div class="panel study-form"><h3>Log a study session</h3><label>Subject / course<input id="studySubject" placeholder="e.g. Computer Networks"></label><label>Duration (minutes)<input id="studyMinutes" type="number" min="1" max="1440" placeholder="e.g. 60"></label><button class="primary full" id="logStudy">Save study session</button><p class="muted" id="studyMessage"></p></div><div class="panel"><div class="panel-head"><div><h3>Study history</h3><p>Your recent focus sessions</p></div><strong id="studyTotal">0h</strong></div><div id="studyHistory"></div></div></div></section>
+<section id="career" class="view hidden"><div class="section-head"><div><h2>Career Hub</h2><p>Turn your learning into evidence of skills and experience.</p></div></div><div class="career-grid"><div class="panel"><span class="career-icon">⌘</span><h3>Skills to develop</h3><p>Track practical skills you want to strengthen.</p><div id="skillsList"></div><div class="inline-add"><input id="skillInput" placeholder="Add a skill"><button class="primary" id="addSkill">Add</button></div></div><div class="panel"><span class="career-icon">↗</span><h3>Opportunity checklist</h3><p>Small steps toward your next opportunity.</p><div id="careerChecks"></div></div><div class="panel career-note"><span class="career-icon">✧</span><h3>Build in public</h3><p>Keep a record of projects, GitHub repositories, volunteering and achievements. Your future CV starts with the work you do today.</p><a href="https://github.com/" target="_blank" rel="noreferrer">Open GitHub ↗</a></div></div></section>
+<footer>CampusPilot · Built for the Cognition × Notion Student OS Hackathon · <span id="notionStatus">Local mode</span></footer>
+</main>
+<dialog id="taskDialog"><form method="dialog" id="taskForm"><div class="modal-head"><h3>Create a task</h3><button class="close" value="cancel">×</button></div><label>Task title<input id="taskTitle" required placeholder="e.g. Finish database assignment"></label><label>Course / category<input id="taskCourse" placeholder="e.g. Database Systems"></label><div class="form-row"><label>Due date<input id="taskDue" type="date"></label><label>Priority<select id="taskPriority"><option>High</option><option selected>Medium</option><option>Low</option></select></label></div><button class="primary full" id="saveTask" value="default">Create task</button></form></dialog>
+<dialog id="eventDialog"><form method="dialog" id="eventForm"><div class="modal-head"><h3>Add a campus event</h3><button class="close" value="cancel">×</button></div><label>Event name<input id="eventTitle" required placeholder="e.g. Tech workshop"></label><div class="form-row"><label>Date<input id="eventDate" type="date"></label><label>Category<select id="eventCategory"><option>Workshop</option><option>Competition</option><option>Club</option><option>Campus</option></select></label></div><label>Location<input id="eventLocation" placeholder="e.g. University auditorium"></label><button class="primary full" id="saveEvent" value="default">Save event</button></form></dialog>
+<script src="app.js"></script>
+</body></html>
